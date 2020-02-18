@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, SetStateAction } from 'react';
 import { HistoryObject } from '../App';
 import './Prompt.css';
 
 interface PromptProps {
-  SetHistory: React.Dispatch<React.SetStateAction<HistoryObject[]>>;
+  SetHistory: React.Dispatch<SetStateAction<HistoryObject[]>>;
   History: HistoryObject[];
   Path: string;
 }
@@ -37,7 +37,7 @@ const Prompt = (Props: PromptProps) => {
   };
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const val = e.target.value.split(' $ ')[1];
-    setText(val);
+    if (val) setText(val);
   };
 
   const handleSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
@@ -50,12 +50,12 @@ const Prompt = (Props: PromptProps) => {
 
   return (
     <textarea
-      className="prompt__textarea"
+      className="prompt"
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onKeyUp={handleSubmit}
       value={`${Props.Path} $ ${text}`}
-      wrap="on"
+      wrap="soft"
     />
   );
 };
