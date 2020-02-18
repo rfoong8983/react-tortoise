@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { HistoryObject } from '../App';
 import './Prompt.css';
 
 interface PromptProps {
-  SetHistory: React.Dispatch<React.SetStateAction<string[]>>;
-  History: string[];
+  SetHistory: React.Dispatch<React.SetStateAction<HistoryObject[]>>;
+  History: HistoryObject[];
   Path: string;
 }
 
@@ -21,22 +22,41 @@ const validCommands = (text: string) => {
 const Prompt = (Props: PromptProps) => {
   const [text, setText] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setText(e.target.value);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    // console.log('meta:', e.metaKey);
+    // console.log('ctrl:', e.ctrlKey);
+    // console.log('alt:', e.altKey);
+    // console.log('shift:', e.shiftKey);
+    if (e.key === 'Enter') {
+      if (e.altKey) {
+        setText(text + '\n');
+      } else {
+        e.preventDefault();
+      }
+    }
+  };
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
+    const val = e.target.value.split(' $ ')[1];
+    setText(val);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    const response: string = validCommands(text);
-    Props.SetHistory([...Props.History, response]);
-    setText('');
+  const handleSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
+    if (!e.altKey && e.key === 'Enter') {
+      const response: HistoryObject = { text, res: validCommands(text) };
+      Props.SetHistory([...Props.History, response]);
+      setText('');
+    }
   };
 
   return (
-    <form className="prompt" onSubmit={handleSubmit}>
-      <p className="prompt__marker">{Props.Path} $</p>
-      <input className="prompt_input" onChange={handleChange} value={text} />
-    </form>
+    <textarea
+      className="prompt__textarea"
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleSubmit}
+      value={`${Props.Path} $ ${text}`}
+      wrap="on"
+    />
   );
 };
 

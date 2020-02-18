@@ -5,14 +5,19 @@ import './App.css';
 const { app } = window.require('electron').remote;
 const home: string = app.getPath('home');
 
+export interface HistoryObject {
+  text: string;
+  res: string;
+}
+
 function App() {
-  const [history, setHistory] = useState<string[]>([]);
+  const [history, setHistory] = useState<HistoryObject[]>([]);
   const [path, setPath] = useState<string>(home);
   console.log(history);
 
   return (
     <div className="App">
-      <Display History={history} />
+      <Display History={history} Path={home} />
       <Prompt History={history} SetHistory={setHistory} Path={home} />
     </div>
   );
