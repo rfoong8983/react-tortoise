@@ -13,7 +13,6 @@ export interface HistoryObject {
 function App() {
   const [history, setHistory] = useState<HistoryObject[]>([]);
   const [path, setPath] = useState<string>(home);
-  console.log(history);
 
   return (
     <div className="App">
