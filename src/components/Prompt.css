@@ -1,4 +1,21 @@
 .prompt {
+  width: 100%;
+  height: min-content;
   display: flex;
   color: white;
+}
+
+.prompt__textarea {
+  color: white;
+  width: 100%;
+  height: min-content;
+  resize: none;
+  -ms-word-break: break-all;
+  /* These are technically the same, but use both, overflow works with ie/edge */
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.prompt__input {
+  flex-grow: 1;
 }
