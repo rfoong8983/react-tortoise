@@ -40,13 +40,8 @@ function App() {
 
   return (
     <div className="App">
-      <Display history={history} path={path} />
-      <Prompt
-        history={history}
-        setHistory={setHistory}
-        path={path}
-        commands={commands}
-      />
+      <Display History={history} Path={home} />
+      <Prompt History={history} SetHistory={setHistory} Path={home} />
     </div>
   );
 }

@@ -3,8 +3,8 @@ import { HistoryObject } from '../App';
 import './Display.css';
 
 interface DisplayProps {
-  history: HistoryObject[];
-  path: string;
+  History: HistoryObject[];
+  Path: string;
 }
 
 const Display = (Props: DisplayProps) => {
@@ -14,17 +14,17 @@ const Display = (Props: DisplayProps) => {
     if (displayRef.current) {
       displayRef.current.scrollTop = displayRef.current.scrollHeight;
     }
-  }, [Props.history.length]);
+  }, [Props.History.length]);
 
   return (
     <div className="display" ref={displayRef}>
-      {Props.history.map((obj, idx) => {
+      {Props.History.map((obj, idx) => {
         const { text, res } = obj;
 
         return (
           <div key={idx}>
             <p className="prompt__marker">
-              {Props.path} $ {text}
+              {Props.Path} $ {text}
             </p>
             <p>{res}</p>
           </div>
