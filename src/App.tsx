@@ -19,6 +19,7 @@ function App() {
 
   const commands = (text: string) => {
     // TODO: split commands and evaluate flags after (pwd -> -L/-P)
+    // TODO: setup man page for pwd
     switch (text) {
       case 'hi':
       case 'hello':
