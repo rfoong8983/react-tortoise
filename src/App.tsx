@@ -21,7 +21,11 @@ function App() {
   const commands = (text: string) => {
     // TODO: setup man page for pwd
     const cmdArgs: string[] = text.split(' ');
-    const cmd: string | undefined = cmdArgs.shift();
+    let cmd: string | undefined = cmdArgs.shift();
+
+    while (!cmd) {
+      cmd = cmdArgs.shift();
+    }
 
     switch (cmd) {
       case 'hi':
