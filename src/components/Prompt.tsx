@@ -3,21 +3,11 @@ import { HistoryObject } from '../App';
 import './Prompt.css';
 
 interface PromptProps {
-  SetHistory: React.Dispatch<SetStateAction<HistoryObject[]>>;
-  History: HistoryObject[];
-  Path: string;
+  setHistory: React.Dispatch<SetStateAction<HistoryObject[]>>;
+  history: HistoryObject[];
+  path: string;
+  commands: (text: string) => string;
 }
-
-// const validCommands = { hello: 'hello to you too! 🐢' };
-const validCommands = (text: string) => {
-  switch (text) {
-    case 'hi':
-    case 'hello':
-      return 'hello to you too! 🐢';
-    default:
-      return `tortoise: command not found: ${text}`;
-  }
-};
 
 const Prompt = (Props: PromptProps) => {
   const [text, setText] = useState('');
@@ -37,13 +27,13 @@ const Prompt = (Props: PromptProps) => {
   };
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const val = e.target.value.split(' $ ')[1];
-    if (val) setText(val);
+    !val ? setText('') : setText(val);
   };
 
   const handleSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (!e.altKey && e.key === 'Enter') {
-      const response: HistoryObject = { text, res: validCommands(text) };
-      Props.SetHistory([...Props.History, response]);
+      const response: HistoryObject = { text, res: Props.commands(text) };
+      Props.setHistory([...Props.history, response]);
       setText('');
     }
   };
@@ -54,7 +44,7 @@ const Prompt = (Props: PromptProps) => {
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onKeyUp={handleSubmit}
-      value={`${Props.Path} $ ${text}`}
+      value={`${Props.path} $ ${text}`}
       wrap="soft"
     />
   );
