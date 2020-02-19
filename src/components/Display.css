@@ -1,0 +1,9 @@
+.display {
+  width: 100%;
+  height: min-content;
+  overflow: scroll;
+  /* flex-grow: 1; */
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
