@@ -11,7 +11,7 @@ export default function main(
   }
 
   if (!cmdArgs.length) return path;
-  const flags: validFlags = { '-L': '', '-P': '' };
+  const flags: validFlags = { '-L': '', '-P': '', '': '' };
   const validFlags = cmdArgs.every((f: string) => flags[f] !== undefined);
   if (!validFlags) return 'pwd: too many arguments';
 

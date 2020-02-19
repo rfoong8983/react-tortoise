@@ -9,8 +9,8 @@ const fs = jest.genMockFromModule('fs');
 // `fs` APIs are used.
 let mockFiles = Object.create(null);
 function __setMockFiles(newMockFiles) {
-  mockFiles = Object.create(null);
-  for (const file in newMockFiles) {
+  // mockFiles = Object.create(null);
+  for (const file of newMockFiles) {
     const dir = path.dirname(file);
 
     if (!mockFiles[dir]) {
@@ -27,11 +27,13 @@ function readdirSync(directoryPath) {
 }
 // A custom version of `readlinkSync` that reads from the special mocked out
 // file list set via __setMockFiles
-function readlinkSync(directoryPath) {
-  if (directoryPath === 'symlink') {
-    return 'actualDirectory';
+function readlinkSync(path) {
+  const parts = path.split('/');
+  const curr = parts[parts.length - 1];
+  if (path === './users/Tortle/documents/symlink') {
+    return 'test';
   } else {
-    return directoryPath;
+    return curr;
   }
 }
 
