@@ -28,7 +28,7 @@ function App() {
       case 'hello':
         return 'hello to you too! 🐢';
       case 'pwd':
-        return pwd(cmdArgs, path, setPath, fs);
+        return pwd(cmdArgs, path, fs);
       default:
         return `tortoise: command not found: ${text}`;
     }

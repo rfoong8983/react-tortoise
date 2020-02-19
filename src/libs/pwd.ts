@@ -1,7 +1,6 @@
 export default function main(
   cmdArgs: string[],
   path: string,
-  setPath: (p: string) => void,
   fs: {
     readlinkSync: (path: string) => string;
     readdirSync: (path: string) => string[];
