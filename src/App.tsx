@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Display from './components/Display';
 import Prompt from './components/Prompt';
 import './App.css';
+import { default as pwd } from './libs/pwd';
 const fs = window.require('fs');
 const { app } = window.require('electron').remote;
 const home: string = app.getPath('home');
@@ -14,32 +15,20 @@ export interface HistoryObject {
 function App() {
   const [history, setHistory] = useState<HistoryObject[]>([]);
   const [path, setPath] = useState<string>(
-    home + '/documents/desktop_application/terminal/symlink'
+    home + '/documents/desktop_application/symlink'
   );
 
   const commands = (text: string) => {
-    // TODO: split commands and evaluate flags after (pwd -> -L/-P)
     // TODO: setup man page for pwd
-    switch (text) {
+    const cmdArgs: string[] = text.split(' ');
+    const cmd: string | undefined = cmdArgs.shift();
+
+    switch (cmd) {
       case 'hi':
       case 'hello':
         return 'hello to you too! 🐢';
       case 'pwd':
-      case 'pwd -L':
-        return path;
-      case 'pwd -P':
-        let resolvedPath;
-        try {
-          const resolved = fs.readlinkSync(path);
-          const tmp = path.split('/');
-          tmp.pop();
-          tmp.push(resolved);
-          resolvedPath = tmp.join('/');
-        } catch (e) {
-          console.log(e);
-          resolvedPath = path;
-        }
-        return resolvedPath;
+        return pwd(cmdArgs, path, setPath, fs);
       default:
         return `tortoise: command not found: ${text}`;
     }
