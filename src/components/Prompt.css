@@ -1,0 +1,11 @@
+.prompt {
+  width: 100%;
+  /* height: 100%; */
+  resize: none;
+  color: white;
+  flex-grow: 2;
+  /* -ms-word-break: break-all; */
+  /* These are technically the same, but use both, overflow works with ie/edge */
+  /* word-break: break-word;
+  overflow-wrap: break-word; */
+}
