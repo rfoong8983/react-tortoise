@@ -1,15 +1,5 @@
-import { resolveDir } from './pathLib';
+import { getPhysicalPath } from './pathLib';
 import { ValidFlags } from '../common/types';
-const fs = window.require('fs');
-
-function resolvePath(path: string) {
-  // split path
-  // filter for blanks
-  // have variable to track current path during check
-  // check for pointers at each part of path
-  // if "." ignore
-  // if ".." get last path ("../users", "./documents/..")
-}
 
 export default function main(
   cmdArgs: string[],
@@ -54,9 +44,15 @@ export default function main(
     }
     if (remaining < 2) {
       // apply currFlag, change directory
+      // currFlag = -P, try resolve directory
+      const resolved = getPhysicalPath(cmdArgs[i], path);
+      setPath(resolved);
+      return resolved;
+      // check directory
+      // change directory (setPath, return)
     }
   }
-
+  // console.log('hi');
   setPath(home);
   return home;
 }

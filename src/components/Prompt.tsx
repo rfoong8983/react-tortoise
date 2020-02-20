@@ -27,7 +27,7 @@ const Prompt = (Props: PromptProps) => {
   };
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     const val = e.target.value.split(' $ ')[1];
-    if (val) setText(val);
+    if (val !== undefined) setText(val);
   };
 
   const handleSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {

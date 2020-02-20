@@ -3,15 +3,16 @@ import fs from '../../__mocks__/fs';
 
 describe('cd function', () => {
   const setPath = jest.fn();
-  const path = './users/Tortle';
-  const home = './users/Tortle';
+  const path = './users/Ryan';
+  const home = './users/Ryan';
   beforeAll(() => {
-    fs.__setMockFiles(['users', 'Tortle', 'documents']);
+    fs.__setMockFiles(['users', 'Ryan', 'documents']);
     // symlink is a shortcut to resolvedLink, defined in fs mock
     fs.__setMockFiles([
-      './users/Tortle/documents/test',
-      './users/Tortle/documents/resolvedLink',
+      './users/Ryan/documents/test',
+      './users/Ryan/documents/resolvedLink',
     ]);
+    // ***** FIX SETMOCKFILES *****
   });
 
   test('should return root path if no args passed', () => {
@@ -35,6 +36,21 @@ describe('cd function', () => {
     test('should return home if arg is -P flag', () => {
       const cmdArgs: string[] = ['-P'];
       expect(cd(cmdArgs, home, path, setPath, fs)).toEqual(home);
+    });
+    test('should return path if valid directory (./path)', () => {
+      console.log(fs.readlinkSync);
+      const cmdArgs: string[] = ['./documents'];
+      expect(cd(cmdArgs, home, path, setPath, fs)).toEqual(path);
+    });
+    test('should return path if valid directory (/path)', () => {
+      console.log(fs.readlinkSync);
+      const cmdArgs: string[] = ['/documents'];
+      expect(cd(cmdArgs, home, path, setPath, fs)).toEqual(path);
+    });
+    test('should return path if valid directory (path)', () => {
+      console.log(fs.readlinkSync);
+      const cmdArgs: string[] = ['documents'];
+      expect(cd(cmdArgs, home, path, setPath, fs)).toEqual(path);
     });
   });
 

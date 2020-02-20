@@ -6,7 +6,8 @@ const { resolveDir } = require('../pathLib');
 describe('pwd function', () => {
   const path = './users/Tortle/documents/symlink';
   beforeAll(() => {
-    fs.__setMockFiles(['users', 'Tortle', 'documents']);
+    fs.__setMockFiles(['users']);
+    fs.__setMockFiles(['users']);
     // symlink is a shortcut to resolvedLink, defined in fs mock
     fs.__setMockFiles([
       './users/Tortle/documents/resolvedLink',
