@@ -1,6 +1,7 @@
 import { default as pwd } from '../pwd';
 import fs from '../../__mocks__/fs';
-import * as resolveDir from '../pathLib';
+jest.mock('../pathLib');
+const { resolveDir } = require('../pathLib');
 
 describe('pwd function', () => {
   const path = './users/Tortle/documents/symlink';
@@ -43,11 +44,15 @@ describe('pwd function', () => {
 
   describe('with valid flags containing -P', () => {
     beforeAll(() => {
-      jest
-        .spyOn(resolveDir, 'resolveDir')
-        .mockImplementation(
-          (p: string) => './users/Tortle/documents/resolvedLink'
-        );
+      // use if keeping track of call count to arg1
+      // jest
+      //   .spyOn(resolveDir, 'resolveDir')
+      //   .mockImplementation(
+      //     (p: string) => './users/Tortle/documents/resolvedLink'
+      //   );
+      resolveDir.mockImplementation(
+        (p: string) => './users/Tortle/documents/resolvedLink'
+      );
     });
     test('should return physical path if -P is last flag in array of valid flags', () => {
       const cmdArgs: string[] = ['-L', '-P', '-L', '-P'];
