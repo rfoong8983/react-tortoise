@@ -1,3 +1,4 @@
+import { resolveDir } from './pathLib';
 import { ValidFlags } from '../common/types';
 
 export default function main(
@@ -14,23 +15,6 @@ export default function main(
   if (!validFlags) return 'pwd: too many arguments';
 
   return resolveFlags(cmdArgs);
-
-  // helper functions
-  function resolveDir(p: string): string {
-    let resolvedPath;
-    try {
-      const resolved = fs.readlinkSync(p);
-      const tmp = p.split('/');
-      tmp.pop(); // pop off symlink
-      tmp.push(resolved); // replace with physical link
-      resolvedPath = tmp.join('/');
-    } catch (e) {
-      console.log(e);
-      resolvedPath = p;
-    }
-
-    return resolvedPath;
-  }
 
   // /valid/sym/apples
   //        sym => ./cats/whiskers
