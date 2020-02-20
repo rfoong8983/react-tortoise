@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --verbose",
     "test:watch": "react-scripts test --env=jsdom jest--watch",
     "eject": "react-scripts eject",
     "electron": "electron .",

@@ -2,8 +2,8 @@ import { default as cd } from '../cd';
 import fs from '../../__mocks__/fs';
 
 describe('cd function', () => {
-  const path = './users/Tortle';
   const setPath = jest.fn();
+  const path = './users/Tortle';
   const home = './users/Tortle';
   beforeAll(() => {
     fs.__setMockFiles(['users', 'Tortle', 'documents']);
