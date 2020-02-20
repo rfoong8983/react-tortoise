@@ -31,7 +31,7 @@ function readlinkSync(path) {
   const parts = path.split('/');
   const curr = parts[parts.length - 1];
   if (path === './users/Tortle/documents/symlink') {
-    return 'test';
+    return 'resolvedLink';
   } else {
     return curr;
   }

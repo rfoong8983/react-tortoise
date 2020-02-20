@@ -1,3 +1,5 @@
+import { ValidFlags } from '../common/types';
+
 export default function main(
   cmdArgs: string[],
   path: string,
@@ -6,12 +8,8 @@ export default function main(
     readdirSync: (path: string) => string[];
   }
 ): string {
-  interface validFlags {
-    [flag: string]: string;
-  }
-
   if (!cmdArgs.length) return path;
-  const flags: validFlags = { '-L': '', '-P': '', '': '' };
+  const flags: ValidFlags = { '-L': '', '-P': '' };
   const validFlags = cmdArgs.every((f: string) => flags[f] !== undefined);
   if (!validFlags) return 'pwd: too many arguments';
 
