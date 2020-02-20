@@ -14,7 +14,3 @@ export function resolveDir(p: string): string {
   console.log(resolvedPath, p);
   return resolvedPath;
 }
-
-const pathFns = { resolveDir };
-
-export default pathFns;
