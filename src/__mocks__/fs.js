@@ -8,8 +8,8 @@ const fs = jest.genMockFromModule('fs');
 // what the files on the "mock" filesystem should look like when any of the
 // `fs` APIs are used.
 let mockFiles = Object.create(null);
-function __setMockFiles(newMockFiles) {
-  // mockFiles = Object.create(null);
+function __setMockFiles(newMockFiles, reset) {
+  if (reset) mockFiles = Object.create(null);
   for (const file of newMockFiles) {
     const dir = path.dirname(file);
 
@@ -18,22 +18,27 @@ function __setMockFiles(newMockFiles) {
     }
     mockFiles[dir].push(path.basename(file));
   }
+
+  return mockFiles;
 }
 
 // A custom version of `readdirSync` that reads from the special mocked out
 // file list set via __setMockFiles
 function readdirSync(directoryPath) {
-  return mockFiles[directoryPath] || [];
+  if (mockFiles[directoryPath]) {
+    // console.log('READING DIR:', mockFiles[directoryPath]);
+    return mockFiles[directoryPath];
+  } else {
+    throw new Error(`no such file or directory, scandir ${path}'`);
+  }
 }
 // A custom version of `readlinkSync` that reads from the special mocked out
 // file list set via __setMockFiles
 function readlinkSync(path) {
-  const parts = path.split('/');
-  const curr = parts[parts.length - 1];
-  if (path === './users/Tortle/documents/symlink') {
+  if (path === '/users/Tortle/documents/symlink' || path === '/symlink') {
     return 'resolvedLink';
   } else {
-    return curr;
+    throw new Error(`invalid argument, readlink '${path}'`);
   }
 }
 
