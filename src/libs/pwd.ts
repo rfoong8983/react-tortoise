@@ -1,15 +1,8 @@
 import { resolveDir } from './pathLib';
 import { ValidFlags } from '../common/types';
 
-export default function main(
-  cmdArgs: string[],
-  path: string,
-  fs: {
-    readlinkSync: (path: string) => string;
-    readdirSync: (path: string) => string[];
-  }
-): string {
-  if (!cmdArgs.length) return path;
+export default function main(cmdArgs: string[], pwDir: string): string {
+  if (!cmdArgs.length) return pwDir;
   const flags: ValidFlags = { '-L': '', '-P': '' };
   const validFlags = cmdArgs.every((f: string) => flags[f] !== undefined);
   if (!validFlags) return 'pwd: too many arguments';
@@ -21,7 +14,7 @@ export default function main(
   // -L => /valid/sym/apples
   // -P => /
   function resolveFlags(flags: string[]) {
-    let currPath: string = path;
+    let currPath: string = pwDir;
     let physPath: string | null = null;
 
     for (let i = 0; i < flags.length; i++) {
@@ -30,7 +23,7 @@ export default function main(
         if (!physPath) physPath = resolveDir(currPath);
         currPath = physPath;
       } else {
-        currPath = path;
+        currPath = pwDir;
       }
     }
 

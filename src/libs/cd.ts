@@ -4,12 +4,8 @@ import { ValidFlags } from '../common/types';
 export default function main(
   cmdArgs: string[],
   home: string,
-  path: string,
-  setPath: (path: string) => void,
-  fs: {
-    readlinkSync: (path: string) => string;
-    readdirSync: (path: string) => string[];
-  }
+  pwDir: string,
+  setPath: (path: string) => void
 ): string {
   const flags: ValidFlags = { '-L': '', '-P': '' };
   const hasArgs: boolean = cmdArgs.length > 0;
@@ -43,16 +39,19 @@ export default function main(
       // return string not in <string1> or replaced result
     }
     if (remaining < 2) {
-      // apply currFlag, change directory
-      // currFlag = -P, try resolve directory
-      const resolved = getPhysicalPath(cmdArgs[i], path);
+      const path = cmdArgs[i];
+      // TODO: return path if not -P
+      const resolved =
+        currFlag === '-P'
+          ? getPhysicalPath(path, pwDir)
+          : getPhysicalPath(path, pwDir);
+
+      if (!resolved) return `cd: no such file or directory: ${path}`;
       setPath(resolved);
       return resolved;
-      // check directory
-      // change directory (setPath, return)
     }
   }
-  // console.log('hi');
+
   setPath(home);
   return home;
 }

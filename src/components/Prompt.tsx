@@ -5,7 +5,7 @@ import './Prompt.css';
 interface PromptProps {
   setHistory: React.Dispatch<SetStateAction<HistoryObject[]>>;
   history: HistoryObject[];
-  path: string;
+  pwDir: string;
   commands: (text: string) => string;
 }
 
@@ -35,7 +35,7 @@ const Prompt = (Props: PromptProps) => {
       const response: HistoryObject = {
         text,
         res: Props.commands(text),
-        path: Props.path,
+        pwDir: Props.pwDir,
       };
       Props.setHistory([...Props.history, response]);
       setText('');
@@ -48,7 +48,7 @@ const Prompt = (Props: PromptProps) => {
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onKeyUp={handleSubmit}
-      value={`${Props.path} $ ${text}`}
+      value={`${Props.pwDir} $ ${text}`}
       wrap="soft"
     />
   );

@@ -18,13 +18,13 @@ const Display = (Props: DisplayProps) => {
   return (
     <div className="display" ref={displayRef}>
       {Props.history.map((obj, idx) => {
-        const { text, res, path } = obj;
+        const { text, res, pwDir } = obj;
         // freeze path otherwise all history gets updated with current path
 
         return (
           <div key={idx}>
             <p className="prompt__marker">
-              {path} $ {text}
+              {pwDir} $ {text}
             </p>
             <p>{res}</p>
           </div>

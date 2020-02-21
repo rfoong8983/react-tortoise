@@ -4,19 +4,19 @@ import Prompt from './components/Prompt';
 import './App.css';
 import { default as pwd } from './libs/pwd';
 import { default as cd } from './libs/cd';
-const fs = window.require('fs');
 const { app } = window.require('electron').remote;
 const home: string = app.getPath('home');
 
 export interface HistoryObject {
   text: string;
   res: string;
-  path: string;
+  pwDir: string;
 }
 
 function App() {
   const [history, setHistory] = useState<HistoryObject[]>([]);
-  const [path, setPath] = useState<string>(home + '/documents');
+  const [pwDir, setPath] = useState<string>(home + '/documents/test');
+  // const [pwDir, setPath] = useState<string>(home);
 
   const commands = (text: string): string => {
     // TODO: setup man page for pwd
@@ -29,9 +29,9 @@ function App() {
       case 'hello':
         return 'hello to you too! 🐢';
       case 'cd':
-        return cd(cmdArgs, home, path, setPath, fs);
+        return cd(cmdArgs, home, pwDir, setPath);
       case 'pwd':
-        return pwd(cmdArgs, path, fs);
+        return pwd(cmdArgs, pwDir);
       default:
         return `tortoise: command not found: ${text}`;
     }
@@ -43,7 +43,7 @@ function App() {
       <Prompt
         history={history}
         setHistory={setHistory}
-        path={path}
+        pwDir={pwDir}
         commands={commands}
       />
     </div>

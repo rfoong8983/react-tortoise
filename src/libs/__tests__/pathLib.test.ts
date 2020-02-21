@@ -1,4 +1,5 @@
-const { getPhysicalPath } = require('../pathLib');
+import { getPhysicalPath } from '../pathLib';
+import { mockComponent } from 'react-dom/test-utils';
 jest.mock('fs');
 const setPath = jest.fn();
 const pwd = '/users/Tortle';
@@ -266,78 +267,48 @@ describe('getPhysicalPath', () => {
     });
 
     describe('with multiple . in path', () => {
-      test('should return an empty string if invalid directory (/././path)', () => {
-        const logicalPath: string = '/././documents/symlink';
+      test('should return an empty string if invalid directory (path/./.)', () => {
+        const logicalPath: string = 'cowspots/././';
         expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
       });
-      // test('should return an empty string if invalid directory (/path/./.)', () => {
-      //   const logicalPath: string = '/documents/symlink/./.';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
-      // });
-      // test('should return an empty string if invalid directory (/./path/.)', () => {
-      //   const logicalPath: string = '/./documents/symlink/.';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
-      // });
-      // test('should return physical path if valid directory (/././path)', () => {
-      //   const logicalPath: string = '/././symlink';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
-      // test('should return physical path if valid directory (/path/.)', () => {
-      //   const logicalPath: string = '/symlink/./.';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
-      // test('should return physical path if valid directory (/./path/.)', () => {
-      //   const logicalPath: string = '/./symlink/.';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
+      test('should return physical path if valid directory (path/./.)', () => {
+        const logicalPath: string = 'documents/symlink/././';
+        expect(getPhysicalPath(logicalPath, pwd)).toEqual(
+          '/users/Tortle/documents/resolvedLink'
+        );
+      });
     });
 
     describe('with a single .. in path', () => {
-      // test('should return root directory already at root (/..)', () => {
-      //   const logicalPath: string = '/..';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/');
-      // });
-      // test('should return an empty string if invalid directory (/../path)', () => {
-      //   const logicalPath: string = '/../documents/cookies';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
-      // });
-      // test('should return an empty string if invalid directory (/path/..)', () => {
-      //   const logicalPath: string = '/documents/symlink/..';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
-      // });
-      // test('should return physical path if valid directory (/../path)', () => {
-      //   const logicalPath: string = '/../symlink';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
-      // test('should return physical path if valid directory (/path/..)', () => {
-      //   const logicalPath: string = '/symlink/asdf/..';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
+      test('should return an empty string if invalid directory (../path)', () => {
+        const logicalPath: string = '../documents/cookies';
+        expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
+      });
+      test('should return physical path if valid directory (path/..)', () => {
+        const logicalPath: string = 'documents/..';
+        expect(getPhysicalPath(logicalPath, pwd)).toEqual('/users/Tortle');
+      });
     });
 
     describe('with multiple .. in path', () => {
-      // test('should return root directory already at root (/../path/../../..)', () => {
-      //   const logicalPath: string = '/../users/Tortle/../../../..';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/');
-      // });
-      // test('should return an empty string if invalid directory (/../../path)', () => {
-      //   const logicalPath: string = '/../../users/../documents/symlink';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
-      // });
-      // test('should return physical path if valid directory (/../../path)', () => {
-      //   const logicalPath: string = '/../../symlink';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
-      // test('should return physical path if valid directory (/path/../..)', () => {
-      //   const logicalPath: string = '/../symlink/asdf/../../symlink/';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
-      // test('should return physical path if valid directory (/../path/../path)', () => {
-      //   const logicalPath: string = '/../symlink/../symlink';
-      //   expect(getPhysicalPath(logicalPath, pwd)).toEqual('/resolvedLink');
-      // });
+      test('should return root directory already at root (../../..)', () => {
+        const logicalPath: string = '../../../..';
+        expect(getPhysicalPath(logicalPath, pwd)).toEqual('/');
+      });
+      test('should return root directory already at root (path/../../..)', () => {
+        const logicalPath: string = 'documents/../../../../../..';
+        expect(getPhysicalPath(logicalPath, pwd)).toEqual('/');
+      });
+      test('should return an empty string if invalid directory (path/../../..)', () => {
+        const logicalPath: string = 'asdf/../';
+        expect(getPhysicalPath(logicalPath, pwd)).toEqual('');
+      });
+      test('should return physical path if valid directory (path/../../..)', () => {
+        const logicalPath: string = 'documents/symlink/../../documents/symlink';
+        expect(getPhysicalPath(logicalPath, pwd)).toEqual(
+          '/users/Tortle/documents/resolvedLink'
+        );
+      });
     });
   });
-
-  describe('paths prepended with ..', () => {});
 });
