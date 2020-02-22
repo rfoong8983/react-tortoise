@@ -25,6 +25,7 @@ module.exports = {
 
   moduleNameWrapper: {
     electron: '<rootDir>/src/__mocks__/electron.js',
+    fs: '<rootDir>/src/__mocks__/fs.js',
   },
 
   /**

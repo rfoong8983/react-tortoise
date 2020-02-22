@@ -27,7 +27,11 @@ function getPwdHistory(pwd: string): string[] {
   return pathHistory;
 }
 
+<<<<<<< Updated upstream
 function getHardLink(path: string): string {
+=======
+export function getHardLink(path: string): string {
+>>>>>>> Stashed changes
   try {
     // try to resolve, then check if valid directory
     const resolved = fs.readlinkSync(path);
@@ -41,7 +45,12 @@ function getHardLink(path: string): string {
   }
 }
 
+<<<<<<< Updated upstream
 function isValidPath(path: string): boolean {
+=======
+export function isValidPath(path: string): boolean {
+  console.log('FS:', fs.__setMockFiles);
+>>>>>>> Stashed changes
   try {
     fs.readdirSync(path);
     return true;
@@ -86,10 +95,23 @@ export function getPhysicalPath(logicalPath: string, pwd: string): string {
     console.log('currPath:', prevPath, currPath);
 
     // try to resolve, then check if valid directory
-    currPath = getHardLink(currPath);
+    // currPath = getHardLink(currPath);
     console.log('resolved:', prevPath, currPath);
+    try {
+      const resolved = fs.readlinkSync(currPath);
+      const tmp = currPath.split('/');
+      tmp.pop(); // pop off symlink
+      tmp.push(resolved); // replace with physical link
+      return tmp.join('/');
+    } catch (e) {}
 
-    if (!isValidPath(currPath)) return '';
+    try {
+      fs.readdirSync(currPath);
+    } catch (e) {
+      console.log(e, `readdir "${currPath}": NOT SYMLINK OR DIRECTORY`);
+      return '';
+    }
+    // if (!isValidPath(currPath)) return '';
     pathHistory.push(currPath);
   }
 

@@ -7,7 +7,6 @@ import { remote } from './__mocks__/electron';
 
 global.window.require = function() {
   return {
-    fs: jest.mock('fs'),
     remote: { app: remote.app },
   };
 };

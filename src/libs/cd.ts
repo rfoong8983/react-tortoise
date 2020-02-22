@@ -47,6 +47,7 @@ export default function main(
           : getPhysicalPath(path, pwDir);
 
       if (!resolved) return `cd: no such file or directory: ${path}`;
+      console.log(resolved);
       setPath(resolved);
       return resolved;
     }

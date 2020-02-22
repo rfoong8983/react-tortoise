@@ -1,6 +1,9 @@
-import { getPhysicalPath } from '../pathLib';
-import { mockComponent } from 'react-dom/test-utils';
 jest.mock('fs');
+const fs = require('fs');
+import { getPhysicalPath } from '../pathLib';
+// import * as pathLib from '../pathLib';
+// const { getPhysicalPath } = pathLib;
+
 const setPath = jest.fn();
 const pwd = '/users/Tortle';
 const home = '/users/Tortle';
@@ -28,6 +31,11 @@ describe('getPhysicalPath', () => {
     );
     // symlink is a shortcut to resolvedLink, defined in fs mock
   });
+
+  // beforeEach(() => {
+  //   const fs = require('fs');
+  //   console.log('FS:', fs.readdirSync);
+  // });
 
   describe('paths prepended with /', () => {
     test('should return an empty string if invalid directory (/path)', () => {
