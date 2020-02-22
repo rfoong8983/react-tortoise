@@ -27,13 +27,27 @@ function getPwdHistory(pwd: string): string[] {
   return pathHistory;
 }
 
-function getHardLink(path: string) {
+function getHardLink(path: string): string {
   try {
     // try to resolve, then check if valid directory
-    return fs.readlinkSync(path);
+    const resolved = fs.readlinkSync(path);
+    const tmp = path.split('/');
+    tmp.pop(); // pop off symlink
+    tmp.push(resolved); // replace with physical link
+    return tmp.join('/');
   } catch (e) {
     // console.log(`"${path}": NOT A SYMLINK`, e);
     return path;
+  }
+}
+
+function isValidPath(path: string): boolean {
+  try {
+    fs.readdirSync(path);
+    return true;
+  } catch (e) {
+    console.log(e, `readdir "${path}": NOT SYMLINK OR DIRECTORY`);
+    return false;
   }
 }
 
@@ -44,7 +58,6 @@ export function getPhysicalPath(logicalPath: string, pwd: string): string {
 
   // split path
   // filter for blanks
-  console.log(fs);
   let pathHistory: string[] = [''];
   if (logicalPath[0] === '/') {
     pathHistory[0] = '/';
@@ -64,33 +77,19 @@ export function getPhysicalPath(logicalPath: string, pwd: string): string {
       continue;
     }
 
-    let resolved;
     let prevPath = pathHistory[pathHistory.length - 1];
     let currPath = prevPath;
     currPath =
       prevPath === '/'
         ? currPath.concat(directory)
         : currPath.concat(`/${directory}`);
-    console.log('currPath:', currPath);
+    console.log('currPath:', prevPath, currPath);
 
     // try to resolve, then check if valid directory
-    resolved = getHardLink(currPath);
-    currPath =
-      prevPath === '/'
-        ? prevPath.concat(resolved)
-        : prevPath.concat(`/${resolved}`);
+    currPath = getHardLink(currPath);
+    console.log('resolved:', prevPath, currPath);
 
-    try {
-      // check if valid directory, then try to resolve, then c
-      fs.readdirSync(currPath);
-    } catch (e) {
-      console.log(
-        `readdir "${resolved || directory}": NOT SYMLINK OR DIRECTORY`
-      );
-      // not a symlink or a valid directory
-      return '';
-    }
-
+    if (!isValidPath(currPath)) return '';
     pathHistory.push(currPath);
   }
 
