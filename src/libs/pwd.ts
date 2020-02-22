@@ -1,4 +1,4 @@
-import { resolveDir } from './pathLib';
+import { getHardLink } from './pathLib';
 import { ValidFlags } from '../common/types';
 
 export default function main(cmdArgs: string[], pwDir: string): string {
@@ -20,7 +20,7 @@ export default function main(cmdArgs: string[], pwDir: string): string {
     for (let i = 0; i < flags.length; i++) {
       // Fn only gets called if all flags are valid
       if (flags[i] === '-P') {
-        if (!physPath) physPath = resolveDir(currPath);
+        if (!physPath) physPath = getHardLink(currPath);
         currPath = physPath;
       } else {
         currPath = pwDir;

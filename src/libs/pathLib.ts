@@ -1,8 +1,8 @@
-const fs = window.require('fs');
+const fs = require('fs');
 
 export function resolveDir(p: string): string {
   let resolvedPath = p;
-  console.log(p);
+
   try {
     const resolved = fs.readlinkSync(p);
     const tmp = p.split('/');
@@ -27,11 +27,7 @@ function getPwdHistory(pwd: string): string[] {
   return pathHistory;
 }
 
-<<<<<<< Updated upstream
-function getHardLink(path: string): string {
-=======
 export function getHardLink(path: string): string {
->>>>>>> Stashed changes
   try {
     // try to resolve, then check if valid directory
     const resolved = fs.readlinkSync(path);
@@ -45,22 +41,23 @@ export function getHardLink(path: string): string {
   }
 }
 
-<<<<<<< Updated upstream
 function isValidPath(path: string): boolean {
-=======
-export function isValidPath(path: string): boolean {
-  console.log('FS:', fs.__setMockFiles);
->>>>>>> Stashed changes
   try {
     fs.readdirSync(path);
     return true;
   } catch (e) {
-    console.log(e, `readdir "${path}": NOT SYMLINK OR DIRECTORY`);
+    // console.log(e, `readdir "${path}": NOT SYMLINK OR DIRECTORY`);
     return false;
   }
 }
 
-export function getPhysicalPath(logicalPath: string, pwd: string): string {
+function buildPath(pathParts: string[]) {}
+
+export function getPhysicalPath(
+  logicalPath: string,
+  pwd: string,
+  getHardLinks: boolean
+): string {
   // TODOS:
   // - Create a class for paths ?
   // - evaluate from most recent path?
@@ -92,26 +89,9 @@ export function getPhysicalPath(logicalPath: string, pwd: string): string {
       prevPath === '/'
         ? currPath.concat(directory)
         : currPath.concat(`/${directory}`);
-    console.log('currPath:', prevPath, currPath);
-
     // try to resolve, then check if valid directory
-    // currPath = getHardLink(currPath);
-    console.log('resolved:', prevPath, currPath);
-    try {
-      const resolved = fs.readlinkSync(currPath);
-      const tmp = currPath.split('/');
-      tmp.pop(); // pop off symlink
-      tmp.push(resolved); // replace with physical link
-      return tmp.join('/');
-    } catch (e) {}
-
-    try {
-      fs.readdirSync(currPath);
-    } catch (e) {
-      console.log(e, `readdir "${currPath}": NOT SYMLINK OR DIRECTORY`);
-      return '';
-    }
-    // if (!isValidPath(currPath)) return '';
+    if (getHardLinks) currPath = getHardLink(currPath);
+    if (!isValidPath(currPath)) return '';
     pathHistory.push(currPath);
   }
 

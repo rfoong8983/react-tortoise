@@ -40,11 +40,12 @@ export default function main(
     }
     if (remaining < 2) {
       const path = cmdArgs[i];
-      // TODO: return path if not -P
+
+      // TODO: return path if not -P !!!!
       const resolved =
         currFlag === '-P'
-          ? getPhysicalPath(path, pwDir)
-          : getPhysicalPath(path, pwDir);
+          ? getPhysicalPath(path, pwDir, true)
+          : getPhysicalPath(path, pwDir, false);
 
       if (!resolved) return `cd: no such file or directory: ${path}`;
       console.log(resolved);

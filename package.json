@@ -18,15 +18,16 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "electron": "^8.0.0"
+    "electron": "^8.0.0",
+    "react-app-rewired": "^2.1.5"
   },
   "homepage": "./",
   "main": "src/electronStarter.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom --verbose",
-    "test:watch": "react-scripts test --env=jsdom jest--watch",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom --verbose",
+    "test:watch": "react-app-rewired --env=jsdom jest--watch",
     "eject": "react-scripts eject",
     "electron": "electron .",
     "edev": "ELECTRON_START_URL=http://localhost:3000 electron ."

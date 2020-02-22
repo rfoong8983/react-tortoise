@@ -25,8 +25,8 @@ function __setMockFiles(newMockFiles, reset) {
 // A custom version of `readdirSync` that reads from the special mocked out
 // file list set via __setMockFiles
 function readdirSync(directoryPath) {
+  // console.log('READING DIR:', mockFiles[directoryPath]);
   if (mockFiles[directoryPath]) {
-    // console.log('READING DIR:', mockFiles[directoryPath]);
     return mockFiles[directoryPath];
   } else {
     throw new Error(`no such file or directory, scandir ${path}'`);
