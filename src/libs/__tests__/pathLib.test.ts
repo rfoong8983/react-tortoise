@@ -5,6 +5,8 @@ const setPath = jest.fn();
 const pwd = '/users/Tortle';
 const home = '/users/Tortle';
 
+//TODO: write tests for directories with spaces
+
 describe('getPhysicalPath', () => {
   beforeAll(() => {
     console.log(
@@ -24,6 +26,12 @@ describe('getPhysicalPath', () => {
         '/users/Tortle/documents/resolvedLink/asdf',
         '/users/Tortle/documents/symlink/asdf/asdf',
         '/users/Tortle/documents/resolvedLink/asdf/asdf',
+        '/symlink spaces',
+        '/resolvedLink spaces',
+        '/symlink spaces/asdf',
+        '/resolvedLink spaces/asdf',
+        '/symlink spaces/asdf/asdf',
+        '/resolvedLink spaces/asdf/asdf',
       ])
     );
     // symlink is a shortcut to resolvedLink, defined in fs mock
@@ -37,11 +45,22 @@ describe('getPhysicalPath', () => {
         const logicalPath: string = '/documents/symlink';
         expect(getPhysicalPath(logicalPath, pwd, getHardLinks)).toEqual('');
       });
+      test('should return an empty string if invalid directory (/path, has spaces)', () => {
+        const logicalPath: string = '/documents/symlink not real';
+        expect(getPhysicalPath(logicalPath, pwd, getHardLinks)).toEqual('');
+      });
 
       test('should return logical path if valid directory (/path)', () => {
         const logicalPath: string = '/symlink';
         expect(getPhysicalPath(logicalPath, pwd, getHardLinks)).toEqual(
           '/symlink'
+        );
+      });
+
+      test('should return logical path if valid directory (/path, has spaces)', () => {
+        const logicalPath: string = '/symlink spaces';
+        expect(getPhysicalPath(logicalPath, pwd, getHardLinks)).toEqual(
+          '/symlink spaces'
         );
       });
 

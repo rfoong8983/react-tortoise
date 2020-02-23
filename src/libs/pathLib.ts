@@ -1,5 +1,13 @@
 const fs = require('fs');
 
+/**
+ *
+ * @param p
+ * @deprecated
+ * @todo
+ * - DELETE FUNCTION
+ *
+ */
 export function resolveDir(p: string): string {
   let resolvedPath = p;
 
@@ -51,10 +59,16 @@ function isValidPath(path: string): boolean {
   }
 }
 
-function buildPath(pathParts: string[]) {}
-
+/**
+ *
+ * @param path
+ * @param pwd
+ * @param getHardLinks
+ * @TODO
+ * - RENAME resolvePath
+ */
 export function getPhysicalPath(
-  logicalPath: string,
+  path: string,
   pwd: string,
   getHardLinks: boolean
 ): string {
@@ -65,12 +79,12 @@ export function getPhysicalPath(
   // split path
   // filter for blanks
   let pathHistory: string[] = [''];
-  if (logicalPath[0] === '/') {
+  if (path[0] === '/') {
     pathHistory[0] = '/';
   } else {
     pathHistory = getPwdHistory(pwd);
   }
-  let parts: string[] = logicalPath.split('/');
+  let parts: string[] = path.split('/');
   const pathParts: string[] = parts.filter((part: string) => part.length);
 
   for (let directory of pathParts) {

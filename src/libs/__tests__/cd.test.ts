@@ -26,6 +26,12 @@ describe('cd function', () => {
         '/users/Tortle/documents/resolvedLink/asdf',
         '/users/Tortle/documents/symlink/asdf/asdf',
         '/users/Tortle/documents/resolvedLink/asdf/asdf',
+        '/symlink spaces',
+        '/resolvedLink spaces',
+        '/symlink spaces/asdf',
+        '/resolvedLink spaces/asdf',
+        '/symlink spaces/asdf/asdf',
+        '/resolvedLink spaces/asdf/asdf',
       ])
     );
   });
@@ -42,6 +48,14 @@ describe('cd function', () => {
   // if no more, try navigating to directory
   // if more (1), search in pwd for new
   // else, return too many arguments
+
+  //TODO: write tests to handle spaces, special chars might be handled by App.tsx
+  describe('when arguments have special characters', () => {
+    test('should correctly handle spaces', () => {
+      const cmdArgs: string[] = ['/symlink spaces'];
+      expect(cd(cmdArgs, home, path, setPath)).toEqual('/symlink spaces');
+    });
+  });
 
   describe('with only a flag argument', () => {
     test('should return home if arg is -L flag', () => {

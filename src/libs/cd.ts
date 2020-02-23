@@ -24,14 +24,26 @@ export default function main(
   }
 
   let currFlag = '-L';
+  let partialArg = '';
   for (let i = 0; i < cmdArgs.length; i++) {
-    const arg = cmdArgs[i];
+    let arg = cmdArgs[i];
     if (flags[arg] !== undefined) {
       currFlag = arg;
       continue;
     }
 
-    // [0, 1, 2, 3, 4]
+    // console.log('ARG:', arg);
+    const lastChar = arg[arg.length - 1];
+    if (lastChar === '\\') {
+      if (partialArg.length) partialArg = partialArg.concat(' ');
+      partialArg = partialArg.concat(arg.slice(0, -1));
+      continue;
+    } else if (partialArg.length) {
+      arg = partialArg.concat(` ${arg}`);
+      partialArg = '';
+      // console.log('PARTIAL:', arg);
+    }
+
     const remaining = cmdArgs.length - i;
     if (remaining > 2) return 'cd: too many arguments';
     if (remaining === 2) {
@@ -39,15 +51,13 @@ export default function main(
       // return string not in <string1> or replaced result
     }
     if (remaining < 2) {
-      const path = cmdArgs[i];
-
       // TODO: return path if not -P !!!!
       const resolved =
         currFlag === '-P'
-          ? getPhysicalPath(path, pwDir, true)
-          : getPhysicalPath(path, pwDir, false);
+          ? getPhysicalPath(arg, pwDir, true)
+          : getPhysicalPath(arg, pwDir, false);
 
-      if (!resolved) return `cd: no such file or directory: ${path}`;
+      if (!resolved) return `cd: no such file or directory: ${arg}`;
       console.log(resolved);
       setPath(resolved);
       return resolved;

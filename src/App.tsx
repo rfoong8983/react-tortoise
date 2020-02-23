@@ -20,7 +20,10 @@ function App() {
 
   const commands = (text: string): string => {
     // TODO: setup man page for pwd
+    console.log(text);
+    // let args: string[] = text.split('\ ')
     const args: string[] = text.split(' ');
+    // args = text.split(' ');
     const cmdArgs: string[] = args.filter((arg: string) => arg.length);
     const cmd: string | undefined = cmdArgs.shift();
 

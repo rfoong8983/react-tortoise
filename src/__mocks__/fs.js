@@ -25,7 +25,7 @@ function __setMockFiles(newMockFiles, reset) {
 // A custom version of `readdirSync` that reads from the special mocked out
 // file list set via __setMockFiles
 function readdirSync(directoryPath) {
-  // console.log('READING DIR:', mockFiles[directoryPath]);
+  // console.log('READING DIR:', mockFiles[directoryPath], directoryPath);
   if (mockFiles[directoryPath]) {
     return mockFiles[directoryPath];
   } else {
@@ -37,6 +37,11 @@ function readdirSync(directoryPath) {
 function readlinkSync(path) {
   if (path === '/users/Tortle/documents/symlink' || path === '/symlink') {
     return 'resolvedLink';
+  } else if (
+    path === '/users/Tortle/documents/symlink spaces' ||
+    path === '/symlink spaces'
+  ) {
+    return 'resolvedLink spaces';
   } else {
     throw new Error(`invalid argument, readlink '${path}'`);
   }
