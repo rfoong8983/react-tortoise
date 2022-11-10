@@ -18,7 +18,7 @@
     "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "electron": "^8.0.0"
+    "electron": "^18.3.7"
   },
   "homepage": "./",
   "main": "src/electronStarter.js",
